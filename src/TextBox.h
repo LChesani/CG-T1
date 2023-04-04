@@ -22,6 +22,7 @@ public:
     
   void borda(int r, int g, int b);
 
+  void cleanText();
   //recebe as coordenadas do mouse para tratar clique ou detectar quando o mouse esta em cima do botao
   
 

@@ -17,6 +17,9 @@ int TextBox::getUso(){
     return uso;
 }
 
+void TextBox::cleanText(){
+    strcpy(text, "");
+}
 
 void TextBox::bs(){
     int i = 0;
