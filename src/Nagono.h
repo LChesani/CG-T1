@@ -21,6 +21,7 @@ public:
     Nagono(int _x, int _y, int _z, int _r, int _n, float angulo, cor *_borda, cor *_preench);
     void transform(int _x, int _y, int _r, float angulo, cor *_borda, cor *_preench);
     void render();
+    int getZ() const;
 };
 
 #endif

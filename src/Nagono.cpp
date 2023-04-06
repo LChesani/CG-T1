@@ -15,6 +15,7 @@ Nagono::Nagono(int _x, int _y, int _z, int _r, int _n, float ang, cor *_borda, c
     n = _n;
 }
 
+
 void Nagono::transform(int _x, int _y, int _r, float ang, cor *_borda, cor *_preench){
     borda = _borda;
     preench = _preench;
@@ -22,6 +23,10 @@ void Nagono::transform(int _x, int _y, int _r, float ang, cor *_borda, cor *_pre
     x = _x;
     y = _y; 
     r = _r;
+}
+
+int Nagono::getZ() const{
+    return z;
 }
 
 void Nagono::render(){

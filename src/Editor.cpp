@@ -3,6 +3,7 @@
 #include "Botao.h"
 #include "Nagono.h"
 #include <list>
+#include <algorithm>
 
 #define NUM_textBox 6
 
@@ -52,7 +53,7 @@ void initEditor(int _w, int _h){
       int iniy = h*88/100;
       caixas.push_back(new TextBox(inix, iniy, wb-w*5/100, hb, labels[i]));
    }
-   gerar = new Botao(_w * 90/100, _h*3/100, 80, 50, "Gerar");
+   gerar = new Botao(_w * 90/100, _h*3/100, 80, 50, (char*)("Gerar")); //forcei a conversao para parar de dar warnings
 }
 
 static void TextBoxRender(){
@@ -62,7 +63,13 @@ static void TextBoxRender(){
    }
 }
 
+static bool sortByLayer(const Nagono *a, const Nagono *b) {
+   return a->getZ() < b->getZ();
+}
+
 static void NagonosRender(){
+   
+   nagonos.sort(sortByLayer); //ele vai plotar primeiro os q tem layer menor
    for(Nagono *n : nagonos){
       n->render();
    }
@@ -135,6 +142,17 @@ static void genNagon(int mx, int my){
    }
 }
 
+
+static void cursor(int xl, int yl1, int yl2){
+   int aux = 0;
+   for(TextBox *b : caixas){
+      if(b->getUso()){
+         aux = strlen(b->getText())*10 + 10;
+      }
+   }
+   CV::line(xl+aux, yl1, xl+aux, yl2);
+}
+
 void loadEditor(int _w, int _h, int mx, int my, int click){
    
    CV::clear(1,1,1);
@@ -157,13 +175,8 @@ void loadEditor(int _w, int _h, int mx, int my, int click){
    }
    turn++;
 
-   int aux = 0;
-   for(TextBox *b : caixas){
-      if(b->getUso()){
-         aux = strlen(b->getText())*10 + 10;
-      }
-   }
-   CV::line(xl+aux, yl1, xl+aux, yl2);
+   cursor(xl, yl1, yl2); //desenha a barrinha das caixas de texto
+
    if(click){
       TextBoxClick(mx, my);
       genNagon(mx, my);
