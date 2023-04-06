@@ -13,7 +13,6 @@
 
 //variavel global para selecao do que sera exibido na canvas.
 int screenWidth = 1280, screenHeight = 720; //largura e altura inicial da tela . Alteram com o redimensionamento de tela.
-int click = 0;
 int mouseX, mouseY; //variaveis globais do mouse para poder exibir dentro da render().
 
 void DesenhaSenoide()
@@ -45,7 +44,7 @@ float f(float x)
 
 void render()
 {
-   loadEditor(screenWidth, screenHeight, mouseX, mouseY, click);
+   loadEditor(screenWidth, screenHeight);
 }
 
 //funcao chamada toda vez que uma tecla for pressionada.
@@ -72,18 +71,15 @@ void mouse(int button, int state, int wheel, int direction, int x, int y)
    mouseX = x; //guarda as coordenadas do mouse para exibir dentro da render()
    mouseY = y;
 
-   click = 0;
-   if( state == 0 ) //clicou
-   {
-       click = 1;
+   if(!state){ //clicou
+      TextBoxClick(mouseX, mouseY);
+      genNagon(mouseX, mouseY);
    }
-
 }
 
 
 
-int main(void)
-{
+int main(void){
    CV::init(&screenWidth, &screenHeight, "Cachorro");
    initEditor(screenWidth, screenHeight);
    CV::run();

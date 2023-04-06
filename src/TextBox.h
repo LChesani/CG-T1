@@ -10,7 +10,7 @@ class TextBox : public Controlador{
   char label[50];
   int uso;
 public:
-  TextBox(float _x, float _y, float _larg, float _alt, char *_label);
+  TextBox(float _x, float _y, float _larg, float _alt, const char *_label);
   void setUso(int _uso);
   int getUso();
 

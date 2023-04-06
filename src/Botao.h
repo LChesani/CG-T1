@@ -10,7 +10,6 @@ class Botao : public Controlador{
 public:
   Botao(float _x, float _y, float _larg, float _alt, char *_label);
   
-
   void render(int r, int g, int b);
 
 };

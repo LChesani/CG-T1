@@ -31,7 +31,8 @@ int Nagono::getZ() const{
 
 void Nagono::render(){
     CV::color(borda->r, borda->g, borda->b);
-    CV::circle(x, y, r, n, angulo);
+    for(int i = 0; i < 10; i++) //pra fazer uma borda mais gorducha
+        CV::circle(x, y, r+i, n, angulo);
     CV::color(preench->r, preench->g, preench->b);
     CV::circleFill(x, y, r, n, angulo);
 }

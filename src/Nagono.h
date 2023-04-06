@@ -4,7 +4,7 @@
 #include "gl_canvas2d.h"
 
 struct cor{
-    int r, g, b;
+    float r, g, b;
 };
 
 class Nagono{

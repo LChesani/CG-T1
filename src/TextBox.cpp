@@ -1,6 +1,6 @@
 #include "TextBox.h"
 
-TextBox::TextBox(float _x, float _y, float _larg, float _alt, char *_label){
+TextBox::TextBox(float _x, float _y, float _larg, float _alt, const char *_label){
      uso = 0;
      altura  = _alt;
      largura = _larg;
