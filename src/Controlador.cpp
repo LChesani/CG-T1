@@ -16,8 +16,7 @@ int Controlador::getY(){
 
 bool Controlador::Colidiu(int mx, int my){
     
-    if( mx >= x && mx <= (x + largura) && my >= y && my <= (y + altura) )
-    {
+    if( mx >= x && mx <= (x + largura) && my >= y && my <= (y + altura) ){
         return true;
     }
     return false;

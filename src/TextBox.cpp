@@ -1,5 +1,6 @@
 #include "TextBox.h"
 
+
 TextBox::TextBox(float _x, float _y, float _larg, float _alt, const char *_label){
      uso = 0;
      altura  = _alt;
@@ -8,6 +9,14 @@ TextBox::TextBox(float _x, float _y, float _larg, float _alt, const char *_label
      y = _y;
      strcpy(text, "");
      strcpy(label, _label);
+}
+
+void TextBox::setText(int numero){
+    std::sprintf(text, "%d", numero);
+}
+
+void TextBox::setText(char *str){
+    strcpy(text, str);
 }
 
 void TextBox::setUso(int _uso){
@@ -25,15 +34,17 @@ void TextBox::bs(){
     int i = 0;
     while(1){
         if(text[i+1] == '\0'){
-        text[i] = '\0';
-        return;
+            text[i] = '\0';
+            return;
         }
         i++;
     }
 }
 
 char* TextBox::getText(){
-    return text;
+    char *aux = (char*) malloc(strlen(text)+1 * sizeof(char));
+    strcpy(aux, text);
+    return aux;
 }
 
 void TextBox::incText(char *_text){

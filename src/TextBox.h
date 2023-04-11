@@ -4,7 +4,7 @@
 
 #include "gl_canvas2d.h"
 #include "Controlador.h"
-
+#include <iostream>
 class TextBox : public Controlador{
   char text[100];
   char label[50];
@@ -20,6 +20,8 @@ public:
 
   void incText(char *_text);
     
+  void setText(int numero);
+  void setText(char *str);
   void borda(int r, int g, int b);
 
   void cleanText();

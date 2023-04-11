@@ -147,7 +147,7 @@ void CV::clear(float r, float g, float b)
 
 void CV::circle( float x, float y, float radius, int div, float angulo)
 {
-   float ang = angulo*180/M_PI, x1, y1;
+   float ang = angulo*M_PI/180, x1, y1;
    float inc = PI_2/div;
    glBegin(GL_LINE_LOOP);
       for(int lado = 1; lado <= div; lado++) //GL_LINE_LOOP desenha um poligono fechado. Liga automaticamente o primeiro e ultimio vertices.
@@ -162,7 +162,7 @@ void CV::circle( float x, float y, float radius, int div, float angulo)
 
 void CV::circleFill( float x, float y, float radius, int div, float angulo)
 {
-   float ang = angulo*180/M_PI, x1, y1;
+   float ang = angulo*M_PI/180, x1, y1;
    float inc = PI_2/div;
    glBegin(GL_POLYGON);
       for(int lado = 1; lado <= div; lado++) //GL_POLYGON desenha um poligono CONVEXO preenchido.

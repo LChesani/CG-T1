@@ -5,7 +5,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-void loadEditor(int _w, int _h);
+void loadEditor(int _w, int _h, int mx, int my, int state, int clicking);
 void editorOnKey(int key);
 void initEditor(int _w, int _h);
 void editorBackspace(void);
