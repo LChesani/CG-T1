@@ -18,7 +18,7 @@ int Nagono::getR(){
 }
 
 
-char* Nagono::corToStr(cor *c) {
+static char* corToStr(cor *c) {
     char* chars = (char*) malloc(12*sizeof(char));
     int _r = round(c->r*255);
     int _g = round(c->g*255);

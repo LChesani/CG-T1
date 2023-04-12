@@ -75,6 +75,7 @@ void mouse(int button, int state, int wheel, int direction, int x, int y)
       clicking = 1;
       TextBoxClick(mouseX, mouseY);
       genNagon(mouseX, mouseY);
+      atualizaNagon(mouseX, mouseY);
    }
 }
 

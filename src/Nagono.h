@@ -21,7 +21,6 @@ class Nagono{
     float angulo;
     cor *borda;
     cor *preench;
-    char *corToStr(cor *c);
 public:
     Nagono(int _x, int _y, int _z, int _r, int _n, float angulo, cor *_borda, cor *_preench);
     void transform(int _n, int _z, int _r, float ang, cor *_borda, cor *_preench);

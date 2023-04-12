@@ -147,6 +147,30 @@ void genNagon(int mx, int my){
    }
 }
 
+void atualizaNagon(int mx, int my){
+   if(botoes.back()->Colidiu(mx, my) && selecionado != nullptr){
+      auto it = caixas.begin();
+      int n_lados = getInfo(*it); //informacao da primeira caixa
+      ++it;
+      int radius = getInfo(*it); //informacao da segunda caixa
+      ++it;
+
+      char *borda = (*it)->getText(); //informacoes de rgb da borda
+      (*it)->cleanText();
+      ++it;
+
+      char *preench = (*it)->getText(); //informacoes de rgb do preenchimento
+      (*it)->cleanText();
+      ++it;
+
+      int ang = getInfo(*it); //angulo de rotacao da figura
+      ++it;
+
+      int layer = getInfo(*it); // "z" da figura, determina a profundidade
+
+      selecionado->transform(n_lados, layer, radius, ang, strToCor(borda), strToCor(preench));
+   }
+}
 
 static void cursor(int xl, int yl1, int yl2){
    int aux = 0;
@@ -194,7 +218,7 @@ static void carregaPropriedades(){
    (*it)->setText(selecionado->getZ()); 
 }
 
-static void selection(int mx, int my){
+static void selection(int mx, int my, int _h){
    nagonos.sort(sortByFront);
    for(Nagono *n : nagonos){
       if(n->colidiu(mx, my)){
@@ -202,6 +226,9 @@ static void selection(int mx, int my){
          carregaPropriedades();
          return;
       }
+   }
+   if(my > _h*80/100){ //pra ele n desmarcar o bagulho caso clique no hud
+      return;
    }
    selecionado = nullptr;
 }
@@ -216,10 +243,11 @@ void loadEditor(int _w, int _h, int mx, int my, int state, int clicking){
    countCursor();
    cursor(xl, yl1, yl2); //desenha a barrinha das caixas de texto
    if(!state){
-      selection(mx, my);
+      selection(mx, my, _h);
    }
 
    if(selecionado != nullptr && clicking){
-      selecionado->move(mx, my);
+      if(my < _h*80/100) //nao enfiar o bagulho atras do hud
+         selecionado->move(mx, my);
    }
 }
