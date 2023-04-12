@@ -47,10 +47,21 @@ void render()
 //funcao chamada toda vez que uma tecla for pressionada.
 void keyboard(int key)
 {
-   if (key == 8){
+   if(key == 19){
+      salvar();
+   }
+   else if(key == 15){
+      recuperar();
+   }
+   if(key == 8){
       editorBackspace();
    }
-   else if( key < 200 ){
+
+   else if(key == 127){
+      apagaFigura();
+   }
+
+   else if(key < 200){
       editorOnKey(key);
    }
 

@@ -5,7 +5,9 @@
 #include <list>
 #include <algorithm>
 #include <iostream>
+#include <fstream>
 #define NUM_textBox 6
+
 
 int w, h;
 int xl = 0;
@@ -18,11 +20,95 @@ std::list <Botao*> botoes;
 
 Nagono *selecionado = (Nagono*) malloc(sizeof(Nagono));
 
+
+
+void createSlider(float x, float y, float width, float height, float minValue, float maxValue, float *value, int mx, int my, int click) {
+    // Definimos um valor de sensibilidade para a borda do slider
+    float sensitivity = 0.1;
+    
+    // Desenha o slider
+    CV::color(0.25, 0.25, 0.25);
+    CV::rectFill(x, y, x + width, y + height);
+    
+    // Calcula a posição do botão no slider
+    float buttonX = x + ((*value - minValue) / (maxValue - minValue)) * width;
+    float buttonY = y + (height / 2);
+    
+    // Desenha o botão
+    CV::color(1, 1, 1);
+    CV::circleFill(buttonX, buttonY, height / 2, 10, 0);
+    
+    // Verifica se o mouse está sobre o botão
+    if(click && my >= y && my <= y + height ){
+    if (mx >= buttonX - height / 2 && mx <= buttonX + height / 2) {
+            // Calcula a nova posição do botão baseado na posição do mouse
+            buttonX = mx;
+            buttonX = std::max(buttonX, x + height / 2);
+            buttonX = std::min(buttonX, x + width - height / 2);
+            
+            // Calcula o novo valor baseado na posição do botão
+            *value = minValue + ((buttonX - x - height / 2) / (width - height)) * (maxValue - minValue);
+    } else if (mx >= x && mx <= x + width) {
+        // Verifica se o mouse está próximo às bordas do slider
+        if (mx <= x + height / 2) {
+            // Se estiver próximo à borda do valor mínimo, ajustamos o valor do controlador para o mínimo do slider
+            *value = minValue;
+        } else if (mx >= x + width - height / 2) {
+            // Se estiver próximo à borda do valor máximo, ajustamos o valor do controlador para o máximo do slider
+            *value = maxValue;
+        } else {
+            // Caso contrário, calculamos o novo valor baseado na posição do mouse e levando em conta a sensibilidade da borda
+            float offset = ((mx - x - height / 2) / (width - height)) * (maxValue - minValue);
+            if (offset < 0) {
+                offset *= (1 - sensitivity);
+            } else {
+                offset *= (1 + sensitivity);
+            }
+            *value = minValue + offset;
+        }
+    }
+    }
+}
+
+
+
+
+
+
+void apagaFigura(){
+   nagonos.remove(selecionado);
+   selecionado = nullptr;
+}
+
+
+
+
+
+
+
+
 void editorBackspace(void){
    for(TextBox *b : caixas){
       if(b->getUso()){
          b->bs();
       }
+   }
+}
+
+
+void salvar(){
+   std::ofstream arquivo("imagem.bin", std::ios::out | std::ios::binary);
+   for (auto it = nagonos.begin(); it != nagonos.end(); ++it) {
+      arquivo.write(reinterpret_cast<const char*>(*it), sizeof(Nagono));
+   }
+}
+
+void recuperar(){
+   std::ifstream arquivo("imagem.bin", std::ios::in | std::ios::binary);
+   Nagono *nagon = new Nagono();
+   while (arquivo.read(reinterpret_cast<char*>(nagon), sizeof(Nagono))) {
+      nagonos.push_back(nagon);
+      nagon = new Nagono();
    }
 }
 
@@ -143,7 +229,7 @@ void genNagon(int mx, int my){
 
       int layer = getInfo(*it); // "z" da figura, determina a profundidade
 
-      nagonos.push_back(new Nagono(w/2, h/2, layer, radius, n_lados, ang, strToCor(borda), strToCor(preench)));
+      nagonos.push_back(new Nagono(w/2, h/2, layer, radius, n_lados, ang, *strToCor(borda), *strToCor(preench)));
    }
 }
 
@@ -168,7 +254,7 @@ void atualizaNagon(int mx, int my){
 
       int layer = getInfo(*it); // "z" da figura, determina a profundidade
 
-      selecionado->transform(n_lados, layer, radius, ang, strToCor(borda), strToCor(preench));
+      selecionado->transform(n_lados, layer, radius, ang, *strToCor(borda), *strToCor(preench));
    }
 }
 
@@ -197,7 +283,7 @@ static void countCursor(){
       CV::color(1, 1, 1);
       if(turn >= 600){
          turn = 0;
-      } 
+      }
    }
    turn++;
 }
@@ -246,8 +332,12 @@ void loadEditor(int _w, int _h, int mx, int my, int state, int clicking){
       selection(mx, my, _h);
    }
 
-   if(selecionado != nullptr && clicking){
+   if(selecionado != nullptr && clicking && !botoes.front()->Colidiu(mx, my) && !botoes.back()->Colidiu(mx, my)){ //garantir que nao vai clicar em um botao e arrastar o tareco
       if(my < _h*80/100) //nao enfiar o bagulho atras do hud
          selecionado->move(mx, my);
+   }
+   if(selecionado != nullptr){
+      createSlider(850,_h*85/100,115, 20, 0, 360, selecionado->getAngPointer(), mx, my, clicking);
+      createSlider(275,_h*85/100,115, 20, 0, 360, selecionado->getRadiusPointer(), mx, my, clicking);
    }
 }
