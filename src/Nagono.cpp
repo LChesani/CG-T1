@@ -21,6 +21,29 @@ float Nagono::getR(){
     return r;
 }
 
+float *Nagono::getBordaR(){
+    return &borda.r;
+}
+
+float *Nagono::getBordaG(){
+    return &borda.g;
+}
+
+float *Nagono::getBordaB(){
+    return &borda.b;
+}
+
+float *Nagono::getPreenchR(){
+    return &preench.r;
+}
+
+float *Nagono::getPreenchG(){
+    return &preench.g;
+}
+
+float *Nagono::getPreenchB(){
+    return &preench.b;
+}
 
 static char* corToStr(cor c) {
     char* chars = (char*) malloc(12*sizeof(char));
@@ -29,6 +52,14 @@ static char* corToStr(cor c) {
     int _b = round(c.b*255);
     sprintf(chars, "%03d,%03d,%03d", _r, _g, _b); //converte as cores para o formato "RRR,GGG,BBB"
     return chars;
+}
+
+int Nagono::getX(){
+    return x;
+}
+
+int Nagono::getY(){
+    return y;
 }
 
 char *Nagono::getBorda(){

@@ -36,6 +36,15 @@ public:
     char *getPreench();
     float *getAngPointer();
     float *getRadiusPointer();
+
+    float *getBordaR();
+    float *getBordaG();
+    float *getBordaB();
+    int getX();
+    int getY();
+    float *getPreenchR();
+    float *getPreenchG();
+    float *getPreenchB();
 };
 
 #endif

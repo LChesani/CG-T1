@@ -15,7 +15,7 @@
 int screenWidth = 1280, screenHeight = 720; //largura e altura inicial da tela . Alteram com o redimensionamento de tela.
 int mouseX, mouseY; //variaveis globais do mouse para poder exibir dentro da render().
 int _state = 0;
-int clicking = 0;
+
 void DesenhaSenoide()
 {
    float x=0, y;
@@ -41,7 +41,7 @@ void DesenhaSenoide()
 
 void render()
 {
-   loadEditor(screenWidth, screenHeight, mouseX, mouseY, _state, clicking);
+   loadEditor(screenWidth, screenHeight, mouseX, mouseY, _state);
 }
 
 //funcao chamada toda vez que uma tecla for pressionada.
@@ -79,11 +79,14 @@ void mouse(int button, int state, int wheel, int direction, int x, int y)
    mouseX = x; //guarda as coordenadas do mouse para exibir dentro da render()
    mouseY = y;
    _state = state;
-   if(_state == 1){
-      clicking = 0;
+
+   if(_state == 1){ 
+      clk(0); // altera o valor da variável através da referência
    }
    if(!_state){ //clicou
-      clicking = 1;
+      clk(1);
+      resetOffset();
+      onlyClick(state, mouseX, mouseY, screenHeight);
       TextBoxClick(mouseX, mouseY);
       genNagon(mouseX, mouseY);
       atualizaNagon(mouseX, mouseY);
