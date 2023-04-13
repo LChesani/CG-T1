@@ -15,6 +15,8 @@ int yl1 = 0;
 int yl2 = 0;
 int turn = 0;
 int clicking = 0;
+int offX = 0;
+int offY = 0;
 
 std::list <TextBox*> caixas;
 std::list <Nagono*> nagonos;
@@ -43,22 +45,17 @@ void clk(int v){
    clicking = v;
 }
 
+void resetOffset(){
+   offX = 0;
+   offY = 0;
+}
+
 void createSlider(float x, float y, float width, float height, float minValue, float maxValue, float *value, int mx, int my, int cor) {
     // Definimos um valor de sensibilidade para a borda do slider
     float sensitivity = 0.001;
     
     // Desenha o slider
-    if(!cor)
-      CV::color(0.25, 0.25, 0.25);
-   else if(cor == 1){
-      CV::color(1, 0, 0);
-   }
-   else if(cor == 2){
-      CV::color(0, 1, 0);
-   }
-   else if(cor == 3){
-      CV::color(0, 0, 1);
-   }
+    CV::color(cor);
     CV::rectFill(x, y, x + width, y + height);
     
     // Calcula a posição do botão no slider
@@ -316,6 +313,10 @@ static void countCursor(){
 }
 
 
+void calculaOffset(int mx, int my){
+   offX = mx-selecionado->getX();
+   offY = my-selecionado->getY();
+}
 
 
 static void selection(int mx, int my, int _h){
@@ -323,6 +324,7 @@ static void selection(int mx, int my, int _h){
    for(Nagono *n : nagonos){
       if(n->colidiu(mx, my)){
          selecionado = n;
+         calculaOffset(mx, my);
          carregaPropriedades();
          return;
       }
@@ -334,17 +336,17 @@ static void selection(int mx, int my, int _h){
 }
 
 static void loadSliders(int _h, int mx, int my){
-   createSlider(275,_h*83/100,115, 20, 0, 400, selecionado->getRadiusPointer(), mx, my, 0);
+   createSlider(275,_h*83/100,115, 20, 0, 400, selecionado->getRadiusPointer(), mx, my, 14);
 
-   createSlider(465,_h*83/100,115, 20, 0, 1, selecionado->getBordaR(), mx, my, 1);
-   createSlider(465,_h*78/100,115, 20, 0, 1, selecionado->getBordaG(), mx, my, 2);
-   createSlider(465,_h*73/100,115, 20, 0, 1, selecionado->getBordaB(), mx, my, 3);
+   createSlider(465,_h*83/100,115, 20, 0, 1, selecionado->getBordaR(), mx, my, 2);
+   createSlider(465,_h*78/100,115, 20, 0, 1, selecionado->getBordaG(), mx, my, 3);
+   createSlider(465,_h*73/100,115, 20, 0, 1, selecionado->getBordaB(), mx, my, 4);
 
-   createSlider(660,_h*83/100,115, 20, 0, 1, selecionado->getPreenchR(), mx, my, 1);
-   createSlider(660,_h*78/100,115, 20, 0, 1, selecionado->getPreenchG(), mx, my, 2);
-   createSlider(660,_h*73/100,115, 20, 0, 1, selecionado->getPreenchB(), mx, my, 3);
+   createSlider(660,_h*83/100,115, 20, 0, 1, selecionado->getPreenchR(), mx, my, 2);
+   createSlider(660,_h*78/100,115, 20, 0, 1, selecionado->getPreenchG(), mx, my, 3);
+   createSlider(660,_h*73/100,115, 20, 0, 1, selecionado->getPreenchB(), mx, my, 4);
 
-   createSlider(850,_h*83/100,115, 20, 0, 360, selecionado->getAngPointer(), mx, my, 0);
+   createSlider(850,_h*83/100,115, 20, 0, 360, selecionado->getAngPointer(), mx, my, 14);
 }
 
 static void selecionadoMarca(){
@@ -355,8 +357,7 @@ static void selecionadoMarca(){
 
 
 
-int offX = 0;
-int offY = 0;
+
 
 static void arrasta(int _w, int _h, int mx, int my){
    if(selecionado != nullptr && clicking && !botoes.front()->Colidiu(mx, my) && !botoes.back()->Colidiu(mx, my) && my < HUD){ //garantir que nao vai clicar em um botao e arrastar o tareco
@@ -364,19 +365,14 @@ static void arrasta(int _w, int _h, int mx, int my){
    }
 }
 
-
 void onlyClick(int state, int mx, int my, int _h){
    if(selecionado != nullptr){
-      offX = mx-selecionado->getX();
-      offY = my-selecionado->getY();
+      calculaOffset(mx, my);
    }
    selection(mx, my, _h);
 }
 
-void resetOffset(){
-   offX = 0;
-   offY = 0;
-}
+
 
 void loadEditor(int _w, int _h, int mx, int my, int state){
    NagonosRender();

@@ -80,12 +80,11 @@ void mouse(int button, int state, int wheel, int direction, int x, int y)
    mouseY = y;
    _state = state;
 
-   if(_state == 1){ 
+   if(_state == 1){
       clk(0); // altera o valor da variável através da referência
    }
    if(!_state){ //clicou
       clk(1);
-      resetOffset();
       onlyClick(state, mouseX, mouseY, screenHeight);
       TextBoxClick(mouseX, mouseY);
       genNagon(mouseX, mouseY);

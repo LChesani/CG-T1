@@ -19,7 +19,7 @@
 int *scrWidth, *scrHeight; //guarda referencia para as variaveis de altura e largura da main()
 
 //conjunto de cores predefinidas. Pode-se adicionar mais cores.
-float Colors[14][3]=
+float Colors[15][3]=
 {
     {0, 0, 0}, //Black
     {0.5, 0.5, 0.5}, //Gray
@@ -35,6 +35,7 @@ float Colors[14][3]=
     {0, 0.5, 0.5}, //
     {0.5, 0, 0.5}, //
     {1, 1, 1}, //white
+    {0.25, 0.25, 0.25} //dark gray
 };
 
 void ConvertMouseCoord(int button, int state, int wheel, int direction, int x, int y);
